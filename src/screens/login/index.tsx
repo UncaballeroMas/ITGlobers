@@ -7,15 +7,26 @@ import {
   TextInput,
   StatusBar,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
+import {fetchLogin} from '../../store/types/login';
 
 import {styles} from './style';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const signIn = async () => {};
-
+  const dispatch = useDispatch();
+  const signIn = async () => {
+    dispatch(
+      fetchLogin({
+        email: email,
+        password: 'password',
+        callback: () => {
+          navigation.navigate('Paginacion');
+        },
+      }),
+    );
+  };
   return (
     <View style={styles.container}>
       <StatusBar
@@ -49,9 +60,7 @@ const Login = ({navigation}) => {
         style={styles.textimput}
       />
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('Paginacion')}>
+      <TouchableOpacity style={styles.button} onPress={signIn}>
         <Text style={styles.textbutton}>Sing in</Text>
       </TouchableOpacity>
 
