@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useEffect} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -10,37 +10,50 @@ import {useSelector, useDispatch} from 'react-redux';
 import {fetchResources, Resource} from '../../store/types/resources';
 import {RootState} from '../../store/store';
 import {styles} from './style';
+import {reset} from '../../store/types/login';
+import {AES256} from '../../config/constants.config';
+import {decryptData} from '../../utils/storage';
 
 const Paginacion = ({navigation}) => {
+  const user = useSelector((state: RootState) => state.login);
   const screenState = useSelector((state: RootState) => state.resourceList);
   const dispatch = useDispatch();
+
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     dispatch(fetchResources({page: 1}));
   }, []);
+  useEffect(() => {
+    const email = decryptData(AES256, user.login.email);
+    setEmail(email);
+  }, [user]);
+
   const handleOnEndReached = () => {
     if (!screenState.loading) {
       dispatch(fetchResources({page: screenState.nextPage}));
     }
   };
+  const logout = async () => {
+    dispatch(reset());
+    navigation.navigate('Login');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.containerHeader}>
-        <Text>email: </Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.textbutton}>Cerrar Seccion</Text>
+        <Text>{email} </Text>
+        <TouchableOpacity style={styles.button} onPress={logout}>
+          <Text style={styles.textbutton}>Cerrar Sesion</Text>
         </TouchableOpacity>
-        {/* {screenState.loading && <Text>Loading</Text>}
-        {screenState.error && <Text>Error</Text>} */}
       </View>
       <Text style={styles.nameText}>Lista de recursos</Text>
       <FlatList
         style={styles.flatlistStyle}
         data={screenState.resources}
-        keyExtractor={item => item.id}
+        keyExtractor={(_, index) => {
+          return index.toString();
+        }}
         renderItem={({item}) => <UserListItem resource={item} />}
         onEndReached={handleOnEndReached}
       />

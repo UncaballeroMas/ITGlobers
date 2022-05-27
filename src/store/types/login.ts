@@ -1,8 +1,11 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import * as apiReqres from '../apiReqres';
+import {encryptData, storeData} from '../../utils/storage';
+import {AES256} from '../../config/constants.config';
 
 export type LoginData = {
   token: string;
+  email: string;
 };
 
 export type LoginState = {
@@ -16,11 +19,12 @@ const initialState: LoginState = {
   error: false,
   login: {
     token: '',
+    email: '',
   },
 };
 
 export const fetchLogin = createAsyncThunk<
-  {login: string},
+  {login: string; email: string},
   {email: string; password: string; callback: any}
 >('fetchLogin', async ({email, password, callback}) => {
   const response = await apiReqres.fetchLogin(email, password);
@@ -28,6 +32,7 @@ export const fetchLogin = createAsyncThunk<
     callback();
     return {
       login: response.body,
+      email: encryptData(AES256, email),
     };
   } else {
     throw 'Error fetching Resources';
@@ -37,7 +42,9 @@ export const fetchLogin = createAsyncThunk<
 const LoginSlice = createSlice({
   name: 'login',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState,
+  },
   extraReducers: builder => {
     builder
       .addCase(fetchLogin.pending, state => {
@@ -47,6 +54,7 @@ const LoginSlice = createSlice({
       .addCase(fetchLogin.fulfilled, (state, action) => {
         state.login.token = action.payload.login;
         state.loading = false;
+        state.login.email = action.payload.email;
       })
       .addCase(fetchLogin.rejected, state => {
         state.loading = false;
@@ -54,4 +62,5 @@ const LoginSlice = createSlice({
       });
   },
 });
+export const {reset} = LoginSlice.actions;
 export default LoginSlice.reducer;

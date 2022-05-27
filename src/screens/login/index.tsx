@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,8 @@ import {
   TextInput,
   StatusBar,
 } from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../store/store';
 import {fetchLogin} from '../../store/types/login';
 
 import {styles} from './style';
@@ -16,17 +17,25 @@ const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const screenState = useSelector((state: RootState) => state.login);
+
   const signIn = async () => {
     dispatch(
       fetchLogin({
         email: email,
-        password: 'password',
+        password: password,
         callback: () => {
           navigation.navigate('Paginacion');
         },
       }),
     );
   };
+
+  useEffect(() => {
+    if (screenState.login.email) {
+      navigation.navigate('Paginacion');
+    }
+  }, []);
   return (
     <View style={styles.container}>
       <StatusBar
