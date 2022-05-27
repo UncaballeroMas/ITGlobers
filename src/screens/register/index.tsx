@@ -10,10 +10,12 @@ import {
 import {useDispatch} from 'react-redux';
 import Button from '../../components/Button';
 import FormInput from '../../components/FormInput';
+import {showErrorToastMessage} from '../../components/ToastContainer/showErrorToast';
 import {registerAccess} from '../../store/types/login';
 import {fetchRegister} from '../../store/types/register';
 import {responsiveNumbers} from '../../utils/dimensions';
 import theme from '../../utils/theme';
+import {validateEmail} from '../../utils/validation';
 
 import {styles} from './style';
 
@@ -22,20 +24,24 @@ const Register = ({navigation}) => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const register = async () => {
-    dispatch(
-      fetchRegister({
-        email: email,
-        password: 'password',
-        callback: () => {
-          navigation.navigate('Pagination');
-        },
-      }),
-    );
-    dispatch(
-      registerAccess({
-        email: email,
-      }),
-    );
+    if (!validateEmail(email)) showErrorToastMessage('Invalid Email.');
+    else if (password.length <= 0) showErrorToastMessage('Invalid Password.');
+    else {
+      dispatch(
+        fetchRegister({
+          email: email,
+          password: 'password',
+          callback: () => {
+            navigation.navigate('Pagination');
+          },
+        }),
+      );
+      dispatch(
+        registerAccess({
+          email: email,
+        }),
+      );
+    }
   };
   return (
     <View>

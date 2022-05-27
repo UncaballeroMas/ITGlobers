@@ -10,9 +10,11 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import Button from '../../components/Button';
 import FormInput from '../../components/FormInput';
+import {showErrorToastMessage} from '../../components/ToastContainer/showErrorToast';
 import {RootState} from '../../store/store';
 import {fetchLogin} from '../../store/types/login';
 import {responsiveNumbers} from '../../utils/dimensions';
+import {validateEmail} from '../../utils/validation';
 
 import {styles} from './style';
 
@@ -23,15 +25,19 @@ const Login = ({navigation}) => {
   const screenState = useSelector((state: RootState) => state.login);
 
   const signIn = async () => {
-    dispatch(
-      fetchLogin({
-        email: email,
-        password: password,
-        callback: () => {
-          navigation.navigate('Pagination');
-        },
-      }),
-    );
+    if (!validateEmail(email)) showErrorToastMessage('Invalid Email.');
+    else if (password.length <= 0) showErrorToastMessage('Invalid Password.');
+    else {
+      dispatch(
+        fetchLogin({
+          email: email,
+          password: password,
+          callback: () => {
+            navigation.navigate('Pagination');
+          },
+        }),
+      );
+    }
   };
 
   useEffect(() => {
