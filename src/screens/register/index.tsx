@@ -27,7 +27,7 @@ const Register = ({navigation}) => {
         email: email,
         password: 'password',
         callback: () => {
-          navigation.navigate('Paginate');
+          navigation.navigate('Pagination');
         },
       }),
     );

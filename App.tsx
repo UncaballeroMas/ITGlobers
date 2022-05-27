@@ -6,7 +6,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 
 import store, {persistor} from './src/store/store';
 import Login from './src/screens/login';
-import Paginate from './src/screens/paginate';
+import Pagination from './src/screens/pagination';
 import Register from './src/screens/register';
 import ToastContainer from './src/components/ToastContainer';
 
@@ -20,7 +20,7 @@ function App() {
           <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
-            <Stack.Screen name="Paginate" component={Paginate} />
+            <Stack.Screen name="Pagination" component={Pagination} />
           </Stack.Navigator>
           <ToastContainer children={undefined} />
         </NavigationContainer>
