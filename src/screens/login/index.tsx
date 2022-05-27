@@ -28,7 +28,7 @@ const Login = ({navigation}) => {
         email: email,
         password: password,
         callback: () => {
-          navigation.navigate('Paginacion');
+          navigation.navigate('Paginate');
         },
       }),
     );
@@ -36,7 +36,7 @@ const Login = ({navigation}) => {
 
   useEffect(() => {
     if (screenState.login.email) {
-      navigation.navigate('Paginacion');
+      navigation.navigate('Paginate');
     }
   }, []);
   return (
