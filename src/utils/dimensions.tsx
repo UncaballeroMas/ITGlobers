@@ -132,6 +132,7 @@ export const responsiveNumbers = {
   twoHundredEightyScale: rs(280),
   threeHundredScale: rs(300),
   threeHundredTenScale: rs(310),
+  threeHundredFourtyScale: rs(340),
   threeHundredFourtySixScale: rs(346),
   fourHundredScale: rs(400),
 };

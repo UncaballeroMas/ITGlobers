@@ -42,7 +42,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: color,
   }),
-  flatlistStyle: {width: 350, height: 400},
+  flatlistStyle: {
+    width: '100%',
+    maxHeight: responsiveNumbers.fourHundredScale,
+  },
   nameText: {
     padding: 15,
     minWidth: '33%',
