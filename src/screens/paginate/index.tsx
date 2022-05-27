@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   FlatList,
+  StatusBar,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchResources, Resource} from '../../store/types/resources';
@@ -13,6 +14,10 @@ import {styles} from './style';
 import {reset} from '../../store/types/login';
 import {AES256} from '../../config/constants.config';
 import {decryptData} from '../../utils/storage';
+import theme from '../../utils/theme';
+import ItemList from '../../components/ItemList';
+import Button from '../../components/Button';
+import {responsiveNumbers} from '../../utils/dimensions';
 
 const Paginacion = ({navigation}) => {
   const user = useSelector((state: RootState) => state.login);
@@ -39,34 +44,33 @@ const Paginacion = ({navigation}) => {
     navigation.navigate('Login');
   };
 
+  const renderItem = ({item}) => <ItemList resource={item} />;
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        animated={true}
+        backgroundColor={theme.colors.PrimaryLogin}
+        barStyle={'dark-content'}
+      />
       <View style={styles.containerHeader}>
-        <Text>{email} </Text>
-        <TouchableOpacity style={styles.button} onPress={logout}>
-          <Text style={styles.textbutton}>Cerrar Sesion</Text>
-        </TouchableOpacity>
+        <Text style={styles.email}>{email} </Text>
+        <Button
+          onPress={logout}
+          text={'Logout'}
+          paddingHorizontal={responsiveNumbers.tenScale}
+        />
       </View>
-      <Text style={styles.nameText}>Lista de recursos</Text>
+      <Text style={styles.label}>Lista de recursos</Text>
       <FlatList
         style={styles.flatlistStyle}
         data={screenState.resources}
         keyExtractor={(_, index) => {
           return index.toString();
         }}
-        renderItem={({item}) => <UserListItem resource={item} />}
+        renderItem={renderItem}
         onEndReached={handleOnEndReached}
       />
     </SafeAreaView>
-  );
-};
-const UserListItem: FunctionComponent<{resource: Resource}> = ({resource}) => {
-  return (
-    <View style={styles.containerList(resource.color)}>
-      <Text style={styles.nameText}>{resource.name}</Text>
-      <Text style={styles.nameText}>{resource.year}</Text>
-      <Text style={styles.nameText}>{resource.pantone_value}</Text>
-    </View>
   );
 };
 

@@ -1,5 +1,8 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {useDispatch} from 'react-redux';
+import {showErrorToastMessage} from '../../components/ToastContainer/showErrorToast';
 import * as apiReqres from '../apiReqres';
+import {registerAccess} from './login';
 
 export type RegisterData = {
   token: string;
@@ -30,7 +33,7 @@ export const fetchRegister = createAsyncThunk<
       register: response.body,
     };
   } else {
-    throw 'Error fetching Resources';
+    showErrorToastMessage('Error fetching Resources');
   }
 });
 

@@ -1,7 +1,9 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import Toast from 'react-native-toast-message';
 import * as apiReqres from '../apiReqres';
 import {encryptData, storeData} from '../../utils/storage';
 import {AES256} from '../../config/constants.config';
+import {showErrorToastMessage} from '../../components/ToastContainer/showErrorToast';
 
 export type LoginData = {
   token: string;
@@ -35,8 +37,16 @@ export const fetchLogin = createAsyncThunk<
       email: encryptData(AES256, email),
     };
   } else {
-    throw 'Error fetching Resources';
+    showErrorToastMessage('Error fetching Resources');
   }
+});
+export const registerAccess = createAsyncThunk<
+  {email: string},
+  {email: string}
+>('registerAccess', async ({email}) => {
+  return {
+    email: encryptData(AES256, email),
+  };
 });
 
 const LoginSlice = createSlice({
@@ -56,11 +66,16 @@ const LoginSlice = createSlice({
         state.loading = false;
         state.login.email = action.payload.email;
       })
+      .addCase(registerAccess.fulfilled, (state, action) => {
+        state.login.token = action.payload.token;
+        state.loading = false;
+        state.login.email = action.payload.email;
+      })
       .addCase(fetchLogin.rejected, state => {
         state.loading = false;
         state.error = true;
       });
   },
 });
-export const {reset} = LoginSlice.actions;
+export const {reset, loginRegister} = LoginSlice.actions;
 export default LoginSlice.reducer;

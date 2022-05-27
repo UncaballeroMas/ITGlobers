@@ -1,29 +1,34 @@
 import {StyleSheet} from 'react-native';
+import {responsiveNumbers} from '../../utils/dimensions';
+import theme from '../../utils/theme';
 
 export const styles = StyleSheet.create({
   containerHeader: {
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.white,
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
+    borderRadius: 5,
+    paddingLeft: responsiveNumbers.tenScale,
   },
   container: {
-    alignItems: 'center',
-    backgroundColor: 'white',
+    padding: responsiveNumbers.twentyScale,
+    backgroundColor: theme.colors.PrimaryLogin,
+    flexDirection: 'column',
+    height: '100%',
   },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: '2%',
-    paddingHorizontal: '6%',
-    borderRadius: 5,
-    elevation: 25,
-    backgroundColor: '#1e90ff',
-    margin: '4%',
+  email: {
+    fontSize: theme.fontSizes[2],
+    fontWeight: 'normal',
+    color: theme.colors.primaryPurple,
   },
-
+  label: {
+    color: theme.colors.primaryPurple,
+    fontSize: theme.fontSizes[5],
+    fontWeight: 'bold',
+    paddingVertical: responsiveNumbers.tenScale,
+  },
   textbutton: {
     fontSize: 16,
     lineHeight: 21,

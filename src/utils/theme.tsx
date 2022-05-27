@@ -1,10 +1,9 @@
 import {responsiveNumbers} from './dimensions';
 const colors = {
-  bluePrimary: '#0567d0',
-  blueIntense: '#1752F0',
-  lightBlue: '#5c9ce0',
+  primaryPurple: '#6C0BA9',
+  headerSalmon: '#d95030',
   backgroundLightBlue: '#007aff',
-  RedPrimaryButton: '#ff3b30',
+  PrimaryLogin: '#D7A1F9',
   dangerRed: '#B20000',
   GrayBackground: '#efeef3',
   GrayShadowLight: '#fff',

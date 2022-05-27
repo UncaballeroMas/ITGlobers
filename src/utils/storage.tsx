@@ -6,9 +6,7 @@ export const encryptData = (key: string, value: string) => {
 };
 
 export const decryptData = (key: string, value: string) => {
-  console.log('value', value);
   const bytes = CryptoES.AES.decrypt(value, key);
   const valueDecrypt = bytes.toString(CryptoES.enc.Utf8);
-  console.log('await', valueDecrypt);
   return valueDecrypt;
 };

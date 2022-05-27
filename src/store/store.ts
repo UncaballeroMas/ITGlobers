@@ -1,4 +1,3 @@
-import thunkMiddleware from 'redux-thunk';
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -11,8 +10,6 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import {PersistGate} from 'redux-persist/integration/react';
 import userListSlice from './types/user';
 import resourceListSlice from './types/resources';
 import LoginSlice from './types/login';
